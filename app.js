@@ -17,6 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 //Routes
-app.use("/api", require("./routes")); //This is the main route for all API endpoints
+const routes = require('./routes');
+app.use('/api', routes);
 
 module.exports = app;

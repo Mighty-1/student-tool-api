@@ -25,6 +25,7 @@ const signup = async (data) => {
 };
 
 const signin = async (data) => {
+  if (!data || !data.email || !data.password) throw new Error('Email and password required');
   const { email, password } = data;
   const user = await User.findOne({ email });
   if (!user) throw new Error("Invalid credentials");
