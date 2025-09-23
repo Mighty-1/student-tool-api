@@ -1,18 +1,15 @@
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import User from "../models/User.js";
+// services/auth.service.js
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const User = require("../models/User.model"); // ensure this file exists and exports mongoose model
 
 const signup = async (data) => {
   const { name, email, password } = data;
-
-  // Check if user already exists
   const existingUser = await User.findOne({ email });
   if (existingUser) throw new Error("User already exists");
 
-  // Hash password
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  // Create new user
   const user = new User({
     name,
     email,
@@ -20,7 +17,6 @@ const signup = async (data) => {
   });
   await user.save();
 
-  // Generate token
   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
     expiresIn: "1d",
   });
@@ -30,16 +26,12 @@ const signup = async (data) => {
 
 const signin = async (data) => {
   const { email, password } = data;
-
-  // Find user
   const user = await User.findOne({ email });
   if (!user) throw new Error("Invalid credentials");
 
-  // Compare password
   const validPassword = await bcrypt.compare(password, user.password);
   if (!validPassword) throw new Error("Invalid credentials");
 
-  // Create JWT
   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
     expiresIn: "1d",
   });
@@ -47,4 +39,4 @@ const signin = async (data) => {
   return { user, token };
 };
 
-export default { signup, signin };
+module.exports = { signup, signin };

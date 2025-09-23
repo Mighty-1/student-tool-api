@@ -1,6 +1,7 @@
-import authService from "../services/auth.service.js";
+// controllers/auth.controller.js
+const authService = require("../services/auth.service");
 
-export const signup = async (req, res) => {
+exports.signup = async (req, res) => {
   try {
     const { user, token } = await authService.signup(req.body);
     res.status(201).json({ message: "Signup successful", user, token });
@@ -9,7 +10,7 @@ export const signup = async (req, res) => {
   }
 };
 
-export const signin = async (req, res) => {
+exports.signin = async (req, res) => {
   try {
     const { user, token } = await authService.signin(req.body);
     res.json({ message: "Signin successful", user, token });

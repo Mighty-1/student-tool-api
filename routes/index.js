@@ -1,5 +1,5 @@
 const express = require("express");
-const { protect } = require("../utils/authMiddleware");
+const {protect} = require("../utils/authMiddleware");
 const router = express.Router();
 
 const stateRoutes = require("./state.routes");
@@ -10,7 +10,6 @@ const authRoutes = require("./auth.routes");
 
 // Use the auth routes
 router.use("/auth", authRoutes);
-
 // Use the state routes
 router.use("/states", protect, stateRoutes);
 // Use the institute routes
