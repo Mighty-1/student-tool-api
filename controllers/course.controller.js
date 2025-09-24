@@ -10,9 +10,12 @@ exports.getAllCourses = async (req, res) => {
 };
 
 exports.getCourses = async (req, res) => {
-  const { instituteId } = req.query;
-  // const { instituteId } = req.params;
+  // Try getting instituteId from both params and query for flexibility
+  const instituteId = req.params.instituteId || req.query.instituteId;
   try {
+    if (!instituteId) {
+      return res.status(400).json({ message: "Institute ID is required" });
+    }
     const courses = await courseService.getCoursesByInstitute(instituteId);
     res.json(courses);
   } catch (err) {
